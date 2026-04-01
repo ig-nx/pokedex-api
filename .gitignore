@@ -17,9 +17,15 @@ ENV/
 db.sqlite3
 local_settings.py
 
-### Environment files
+### Environment variables
 .env
 .env.*
+
+### Static files (GENERADOS)
+staticfiles/
+
+### Media (uploads de usuarios)
+media/
 
 ### IDE / OS
 .vscode/
@@ -28,3 +34,19 @@ local_settings.py
 Thumbs.db
 desktop.ini
 
+### Testing / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+### Logs
+*.log
+
+### Gunicorn / producción
+gunicorn.pid
+
+### Node (si usas frontend)
+node_modules/
+
+### Otros
+*.swp
