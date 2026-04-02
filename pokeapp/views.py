@@ -8,7 +8,7 @@ FAKE_ADMIN_PASSWORD = "admin"
 
 def index(request):
     base_url = "https://pokeapi.co/api/v2/pokemon/"
-    limit = 16
+    limit = 18
 
     try:
         page = int(request.GET.get("page", "1"))
