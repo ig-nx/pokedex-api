@@ -1,32 +1,90 @@
-{% extends 'base.html' %} 
- 
-{% block contenido %} 
+{% extends 'base.html' %}
 
-<div class="container mb-5">
-    <div class="row">
-        {% for p in datos %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card mb-5 shadow-sm border-0" style="width: 15rem;">
-                <img src="{{ p.url_imagen }}" class="card-img-top" alt="{{ p.name }}" loading="lazy" decoding="async">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start gap-2">
-                        <h5 class="card-title mb-1"> {{ p.name }}</h5>
-                        {% if p.id %}
-                        <span class="badge text-bg-dark">#{{ p.id|stringformat:"03d" }}</span>
-                        {% endif %}
-                    </div>
-                    <p class="card-text text-muted small mb-0">Arte oficial (Shiny)</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item small">Fuente: PokeAPI</li>
-                </ul>
-                <div class="card-body">
-                    <button type="button" class="btn btn-outline-dark btn-sm w-100" disabled>Detalles (próximamente)</button>
-                </div>
-                </div>
+{% block contenido %}
+  <div class="py-3 py-md-4 mb-3">
+    <h1 class="display-6 mb-2">Pokédex</h1>
+    <p class="text-muted mb-0">Listado de Pokémon consumiendo la API pública de PokeAPI.</p>
+  </div>
+
+  {% if datos %}
+    <div class="row g-3 g-md-4">
+      {% for p in datos %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+          <div class="card pokemon-card h-100">
+            <div class="ratio ratio-1x1 p-2">
+              {% if p.url_imagen %}
+                <img src="{{ p.url_imagen }}" class="pokemon-img" alt="{{ p.name }}" loading="lazy" decoding="async">
+              {% else %}
+                <div class="d-flex align-items-center justify-content-center text-muted small">Sin imagen</div>
+              {% endif %}
+            </div>
+            <div class="card-body py-3">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <h2 class="h6 card-title mb-0">{{ p.name }}</h2>
+                {% if p.id %}
+                  <span class="badge text-bg-dark">#{{ p.id|stringformat:"03d" }}</span>
+                {% endif %}
+              </div>
+              <p class="card-text text-muted small mb-0">Arte oficial (Shiny)</p>
+            </div>
+          </div>
         </div>
-        {% endfor %}
+      {% endfor %}
     </div>
-</div>
 
+    {% if total_pages and total_pages > 1 %}
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-4 pt-3 border-top">
+        <div class="text-muted small">
+          Página {{ page }} de {{ total_pages }}{% if count %} — {{ count }} Pokémon{% endif %}
+        </div>
+
+        <nav aria-label="Paginación">
+          <ul class="pagination pagination-sm mb-0 justify-content-center justify-content-md-end">
+            <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+              <a class="page-link" href="?page={{ page|add:'-1' }}" aria-label="Anterior">Anterior</a>
+            </li>
+
+            {% if show_first %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1">1</a>
+              </li>
+            {% endif %}
+            {% if show_left_ellipsis %}
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+
+            {% for pnum in page_numbers %}
+              <li class="page-item {% if pnum == page %}active{% endif %}">
+                <a class="page-link" href="?page={{ pnum }}">{{ pnum }}</a>
+              </li>
+            {% endfor %}
+
+            {% if show_right_ellipsis %}
+              <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+            {% if show_last %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ total_pages }}">{{ total_pages }}</a>
+              </li>
+            {% endif %}
+
+            <li class="page-item {% if total_pages and page >= total_pages %}disabled{% endif %}">
+              <a class="page-link" href="?page={{ page|add:'1' }}" aria-label="Siguiente">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="py-4">
+      <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+        <div class="spinner-border text-dark" role="status" aria-label="Cargando"></div>
+        <div>
+          <div class="fw-semibold">No se pudieron cargar los Pokémon</div>
+          <div class="text-muted small">Revisa tu conexión o vuelve a intentar más tarde.</div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
+
