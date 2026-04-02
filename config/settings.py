@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3p$%4eo97#pv6ijzv@0^)pa6q8lg76mo)u*8n@xz%(wf@f&&by
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['161.153.205.118', '127.0.0.1', 'localhost', 'pokedex.restak.cl']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'pokedex.restak.cl']
 
 
 # Application definition
